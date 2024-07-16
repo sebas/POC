@@ -1,10 +1,12 @@
 package com.example.poc
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -20,21 +22,22 @@ class MainActivity : AppCompatActivity() {
     private val memberViewModel: MemberViewModel by viewModels()
     private lateinit var memberAdapter: MemberAdapter
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        memberAdapter = MemberAdapter(emptyList()) { member ->
-            memberViewModel.deleteMember(member, this)
+        memberAdapter = MemberAdapter(emptyList(), emptyList()) { dni ->
+            memberViewModel.deleteMember(dni, this)  // Pass DNI instead of name
         }
         recyclerView.adapter = memberAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
             memberViewModel.members.collect { members ->
-                memberAdapter = MemberAdapter(members) { member ->
-                    memberViewModel.deleteMember(member, this@MainActivity)
+                memberAdapter = MemberAdapter(members, memberViewModel.dniList) { dni ->
+                    memberViewModel.deleteMember(dni, this@MainActivity)  // Pass DNI instead of name
                 }
                 recyclerView.adapter = memberAdapter
             }
@@ -43,6 +46,17 @@ class MainActivity : AppCompatActivity() {
         val addButton: Button = findViewById(R.id.addButton)
         addButton.setOnClickListener {
             showAddMemberDialog()
+        }
+
+        val countMember: TextView = findViewById(R.id.memberCount)
+        lifecycleScope.launch {
+            memberViewModel.members.collect { members ->
+                memberAdapter = MemberAdapter(members, memberViewModel.dniList) { dni ->
+                    memberViewModel.deleteMember(dni, this@MainActivity)  // Pass DNI instead of name
+                }
+                recyclerView.adapter = memberAdapter
+                countMember.text = "Members: ${members.size}"
+            }
         }
     }
 
@@ -55,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         builder.setPositiveButton("OK", null)
         builder.setNegativeButton("Cancel") { dialog, which ->
-            dialog.dismiss() // Cierra el diálogo al cancelar
+            dialog.dismiss() // Close the dialog on cancel
         }
 
         val dialog = builder.create()
@@ -68,10 +82,10 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             } else {
                 Toast.makeText(this, "No existe cliente con ese DNI", Toast.LENGTH_SHORT).show()
-                // No cerramos el diálogo para mantenerlo visible
+                // Do not close the dialog to keep it visible
             }
 
-            // Ocultar el teclado
+            // Hide the keyboard
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
         }

@@ -12,12 +12,13 @@ import kotlinx.coroutines.launch
 class MemberViewModel : ViewModel() {
     private val _members = MutableSharedFlow<List<String>>(replay = 1)
     val members: Flow<List<String>> get() = _members.asSharedFlow()
-    private val dniList = mutableListOf<String>()
+    val dniList = mutableListOf<String>()
 
     private val dniMap = mapOf(
         "12345" to "Sebas",
         "1234" to "Giordan",
-        "123" to "Juan"
+        "123" to "Juan",
+        "12" to "Juan"
     )
 
     init {
@@ -26,33 +27,38 @@ class MemberViewModel : ViewModel() {
         }
     }
 
-
     fun addMember(dni: String, context: Context) {
         viewModelScope.launch {
             val currentList = _members.replayCache.firstOrNull() ?: emptyList()
-            if (!isDniDuplicated(dni,dniList)) {
+            if (!isDniDuplicated(dni, dniList)) {
                 if (isDniValid(dni)) {
                     val updatedList = currentList.toMutableList().apply {
                         add(dniMap[dni]!!)
-                        dniList.add(dni)
+                        dniList.add(dni)  // Add DNI to the list
                     }
                     _members.emit(updatedList)
                     Toast.makeText(context, "Miembro agregado: $dni", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(context, "Este nombre ya esta incluido en la lista", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Este nombre ya está incluido en la lista", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    fun deleteMember (name:String, context: Context) {
+    fun deleteMember(dni: String, context: Context) {  // Change to delete using DNI
         viewModelScope.launch {
-            val currentList = _members.replayCache.firstOrNull() ?: emptyList()
-            val updatedList = currentList.toMutableList().apply {
-                remove(name)
+            if (dniList.contains(dni)) {
+                val currentList = _members.replayCache.firstOrNull() ?: emptyList()
+                val nameToRemove = dniMap[dni]
+                val updatedList = currentList.toMutableList().apply {
+                    remove(nameToRemove)  // Remove by name obtained from DNI map
+                }
+                dniList.remove(dni)  // Remove DNI from the list
+                _members.emit(updatedList)
+                Toast.makeText(context, "Miembro removido", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No se encontró miembro con ese DNI", Toast.LENGTH_SHORT).show()
             }
-            _members.emit(updatedList)
-            Toast.makeText(context, "Miembro removido", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -64,5 +70,3 @@ class MemberViewModel : ViewModel() {
         return dniMap.containsKey(dni)
     }
 }
-
-

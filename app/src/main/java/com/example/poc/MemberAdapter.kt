@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
 class MemberAdapter(
     private val members: List<String>,
-    private val onDeleteClick: (String) -> Unit
+    private val dniList: List<String>,  // Add DNI list
+    private val onDeleteClick: (String) -> Unit  // Change parameter type to String for DNI
 ) : RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
 
     class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,9 +26,10 @@ class MemberAdapter(
 
     override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
         val member = members[position]
+        val dni = dniList[position]  // Get corresponding DNI
         holder.memberName.text = member
         holder.deleteButton.setOnClickListener {
-            onDeleteClick(member)
+            onDeleteClick(dni)  // Pass the DNI to the onDeleteClick function
         }
     }
 
