@@ -69,7 +69,7 @@ class MemberViewModel : ViewModel() {
     private fun isDniDuplicated(dni: String, list: MutableList<String>?): Boolean {
         return list?.contains(dni) ?: false
     }
-
+// agrege un carrito de compras a las 2:42 Miercoles
     fun isDniValid(dni: String): Boolean {
         return dniMap.containsKey(dni)
     }
