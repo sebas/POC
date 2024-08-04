@@ -13,6 +13,7 @@ class MemberViewModel : ViewModel() {
     private val _members = MutableSharedFlow<List<String>>(replay = 1)
     val members: Flow<List<String>> get() = _members.asSharedFlow()
     val dniList = mutableListOf<String>()
+    //PR de alguien a las 2:39 del Martes
 
     private val dniMap = mapOf(
         "12345" to "Sebas",
