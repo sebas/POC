@@ -64,6 +64,7 @@ class MemberViewModel : ViewModel() {
         }
     }
 
+    // agrege un nuevo feature a las 2:17 Miercoles
     private fun isDniDuplicated(dni: String, list: MutableList<String>?): Boolean {
         return list?.contains(dni) ?: false
     }
