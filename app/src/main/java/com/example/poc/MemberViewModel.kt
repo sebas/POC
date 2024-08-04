@@ -44,7 +44,7 @@ class MemberViewModel : ViewModel() {
             }
         }
     }
-
+// arreglando mi bug el viernes
     fun deleteMember(dni: String, context: Context) {  // Change to delete using DNI
         viewModelScope.launch {
             if (dniList.contains(dni)) {
