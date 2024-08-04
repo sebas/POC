@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+// arregle este bug a las 4:04
     private fun showAddMemberDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Agregar Miembro")
