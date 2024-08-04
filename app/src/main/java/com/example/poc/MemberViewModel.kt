@@ -26,7 +26,7 @@ class MemberViewModel : ViewModel() {
             _members.emit(emptyList())
         }
     }
-
+// PR el martes se merge con la main
     fun addMember(dni: String, context: Context) {
         viewModelScope.launch {
             val currentList = _members.replayCache.firstOrNull() ?: emptyList()
