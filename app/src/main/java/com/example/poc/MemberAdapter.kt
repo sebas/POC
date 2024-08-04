@@ -17,7 +17,7 @@ class MemberAdapter(
         val memberName: TextView = itemView.findViewById(R.id.memberName)
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
     }
-
+// pr de otra persona a las 4:00
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_delete_member, parent, false)
