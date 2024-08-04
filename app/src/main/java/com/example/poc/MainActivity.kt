@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 recyclerView.adapter = memberAdapter
             }
         }
+// arregle el button a las 2:56 miercoles (esto puede generar un conflicto)
         //se acepto el pr de otra persona a las 2:53 martes
 
         val addButton: Button = findViewById(R.id.addButton)
