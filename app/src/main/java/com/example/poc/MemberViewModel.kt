@@ -72,3 +72,5 @@ class MemberViewModel : ViewModel() {
         return dniMap.containsKey(dni)
     }
 }
+
+// Otro feature creado a las 2:19 PR aceptado el Martes
