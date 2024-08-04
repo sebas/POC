@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 recyclerView.adapter = memberAdapter
             }
         }
-
+// arregle el button a las 2:56 miercoles (esto puede generar un conflicto)
         val addButton: Button = findViewById(R.id.addButton)
         addButton.setOnClickListener {
             showAddMemberDialog()
