@@ -22,6 +22,7 @@ class MemberViewModel : ViewModel() {
     )
 // agregando un cambio el martes a la 1:37
     // arregle  el bug a la 1:41
+// agregando un cambio el martes a la 1:39 (esto ya estaba en main y lo puse abajo)
     init {
         viewModelScope.launch {
             _members.emit(emptyList())
